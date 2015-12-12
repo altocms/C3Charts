@@ -1,6 +1,12 @@
 <?php
+/* -------------------------------------------------------
+ * C3Charts for PHP
+ *
+ * MIT License
+ * -------------------------------------------------------
+ */
 
-namespace Alto\C3Charts;
+namespace Alto\Libs\C3Charts;
 
 /**
  * Class Entity
@@ -15,7 +21,7 @@ class Entity implements \JsonSerializable {
      * @param string $sName
      * @param mixed  $xValue
      *
-     * @return $this
+     * @return Entity
      */
     public function setProp($sName, $xValue) {
 

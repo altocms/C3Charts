@@ -1,6 +1,12 @@
 <?php
+/* -------------------------------------------------------
+ * C3Charts for PHP
+ *
+ * MIT License
+ * -------------------------------------------------------
+ */
 
-namespace Alto\C3Charts;
+namespace Alto\Libs\C3Charts;
 
 /**
  * Class Column
@@ -26,7 +32,7 @@ class Column extends Entity {
     /**
      * @param string $sName
      *
-     * @return Entity
+     * @return Column
      */
     public function setName($sName) {
 
@@ -70,7 +76,7 @@ class Column extends Entity {
     /**
      * @param bool $bXData
      *
-     * @return Entity
+     * @return Column
      */
     public function clearData($bXData = true) {
 
@@ -82,7 +88,7 @@ class Column extends Entity {
     }
 
     /**
-     * @return Entity
+     * @return Column
      */
     public function clearXData() {
 
@@ -93,7 +99,7 @@ class Column extends Entity {
     /**
      * @param $aData
      *
-     * @return Entity
+     * @return Column
      */
     public function setData($aData) {
 
@@ -114,7 +120,7 @@ class Column extends Entity {
     /**
      * @param $xItem
      *
-     * @return Entity
+     * @return Column
      */
     public function addRow($xItem) {
 
@@ -168,7 +174,7 @@ class Column extends Entity {
     /**
      * @param $sChartType
      *
-     * @return Entity
+     * @return Column
      */
     public function setType($sChartType) {
 
@@ -186,7 +192,7 @@ class Column extends Entity {
     /**
      * @param $aData
      *
-     * @return Entity
+     * @return Column
      */
     public function setXData($aData) {
 
@@ -284,7 +290,7 @@ class Column extends Entity {
     /**
      * @param bool $bSet
      *
-     * @return Entity
+     * @return Column
      */
     public function setY2($bSet = true) {
 

@@ -1,6 +1,12 @@
 <?php
+/* -------------------------------------------------------
+ * C3Charts for PHP
+ *
+ * MIT License
+ * -------------------------------------------------------
+ */
 
-namespace Alto\C3Charts;
+namespace Alto\Libs\C3Charts;
 
 /**
  * Class Chart
@@ -21,11 +27,57 @@ class Chart extends Entity{
 
     protected $aChartOptions = [];
 
+    /**
+     * Chart constructor.
+     *
+     * @param array $aColumns
+     */
+    public function __construct($aColumns = []) {
+
+        if (!empty($aColumns)) {
+            foreach($aColumns as $sColumnsName => $xColumnData) {
+                if ($xColumnData instanceof Column) {
+                    $this->setColumn($xColumnData);
+                } else {
+                    $this->setColumn($sColumnsName, $xColumnData);
+                }
+            }
+        }
+        $this->setBindTo('#chart');
+    }
+
+    /**
+     * @param string $sElement
+     *
+     * @return Chart
+     */
+    public function setBindTo($sElement) {
+
+        $this->setProp('bind_to', $sElement);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBindTo() {
+
+        return $this->getProp('bind_to');
+    }
+
+    /**
+     * Clear all columns in chart
+     */
     public function clearColumns() {
 
         $this->aColumns = [];
     }
 
+    /**
+     * @param string $sName
+     * @param array $aData
+     * @return Column|array
+     */
     public function setColumn($sName, $aData = []) {
 
         if ((func_num_args() == 1) && ($sName instanceof Column)) {
@@ -41,20 +93,37 @@ class Chart extends Entity{
         return $oColumn;
     }
 
+    /**
+     * @return Column[]
+     */
     public function getColumns() {
 
         return $this->aColumns;
     }
 
-    public function getColumn($sName) {
+    /**
+     * @param string|int $xName
+     *
+     * @return Column|null
+     */
+    public function getColumn($xName) {
 
         $aColumns = $this->getColumns();
-        if (isset($aColumns[$sName])) {
-            return $aColumns[$sName];
+        if (is_integer($xName)) {
+            $aColumnNames = array_keys($aColumns);
+            if (isset($aColumnNames[$xName])) {
+                return $aColumns[$aColumnNames[$xName]];
+            }
+        } elseif (isset($aColumns[$xName])) {
+            return $aColumns[$xName];
         }
         return null;
     }
 
+    /**
+     * @param int $iIndex
+     * @return null
+     */
     public function getColumnByIndex($iIndex) {
 
         $aColumns = array_values($this->getColumns());
@@ -110,26 +179,45 @@ class Chart extends Entity{
         return $this->setX()->setTimeSeries($aData);
     }
 
+    /**
+     * @param $aData
+     * @return $this
+     */
     public function setXCategories($aData) {
 
         return $this->setX()->setCategories($aData);
     }
 
+    /**
+     * @param null $sLabel
+     * @return Axis
+     */
     public function setY($sLabel = null) {
 
         return $this->setAxis('y', $sLabel);
     }
 
+    /**
+     * @param null $sLabel
+     * @return Axis
+     */
     public function setY1($sLabel = null) {
 
         return $this->setY($sLabel);
     }
 
+    /**
+     * @param null $sLabel
+     * @return Axis
+     */
     public function setY2($sLabel = null) {
 
         return $this->setAxis('y2', $sLabel);
     }
 
+    /**
+     * @return $this
+     */
     public function setGroup() {
 
         $aGroup = [];
@@ -140,11 +228,19 @@ class Chart extends Entity{
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getGroups() {
 
         return $this->aGroups;
     }
 
+    /**
+     * @param string $sChartType
+     * @param array $aOptions
+     * @return $this
+     */
     public function setChartType($sChartType, $aOptions = []) {
 
         $this->sChartType = $sChartType;
@@ -152,11 +248,18 @@ class Chart extends Entity{
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getChartType() {
 
         return $this->sChartType;
     }
 
+    /**
+     * @param null|string $sChartType
+     * @return array|null
+     */
     public function getChartOptions($sChartType = null) {
 
         if (!$sChartType) {
@@ -167,6 +270,9 @@ class Chart extends Entity{
         return null;
     }
 
+    /**
+     * @param array $aRow
+     */
     public function addRow($aRow) {
 
         foreach($aRow as $sName => $xItem) {
@@ -187,9 +293,13 @@ class Chart extends Entity{
         return $oNewChart;
     }
 
+    /**
+     * @return array
+     */
     public function asArray() {
 
-        $aResult = [];
+        $aResult = ['bindto' => $this->getBindTo()];
+
         if (!empty($this->aAxes['x']) && $this->aAxes['x']->getType() == 'timeseries') {
             $aResult['data']['x'] = 'x';
             $aResult['data']['columns'][] = array_merge(['x'], $this->aAxes['x']->getData());
@@ -251,6 +361,24 @@ class Chart extends Entity{
             }
         }
         return $aResult;
+    }
+
+    /**
+     * @return string
+     */
+    public function getC3($sBindTo = null) {
+
+        if (!empty($sBindTo)) {
+            $aData = $this->asArray();
+            $aData['bindto'] = (string)$sBindTo;
+            return json_encode($aData);
+        }
+        return json_encode($this);
+    }
+
+    public function __toString() {
+
+        return $this->getC3();
     }
 
 }

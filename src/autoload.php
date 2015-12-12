@@ -1,6 +1,14 @@
 <?php
+/* -------------------------------------------------------
+ * C3Charts for PHP
+ *
+ * MIT License
+ * -------------------------------------------------------
+ */
+
+
 /**
- * An example of a project-specific implementation.
+ * Autoloader of classes in namespace \Alto\Libs\C3Charts
  *
  * After registering this autoload function with SPL, the following line
  * would cause the function to attempt to load the \Foo\Bar\Baz\Qux class
@@ -14,7 +22,7 @@
 spl_autoload_register(function ($class) {
 
     // project-specific namespace prefix
-    $prefix = 'Alto\\C3Charts\\';
+    $prefix = 'Alto\\Libs\\C3Charts\\';
 
     // base directory for the namespace prefix
     $base_dir = __DIR__ . '/C3Charts/';
